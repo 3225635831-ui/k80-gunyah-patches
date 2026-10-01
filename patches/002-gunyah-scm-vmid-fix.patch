@@ -1,0 +1,18 @@
+diff --git a/drivers/gunyah/scm.c b/drivers/gunyah/scm.c
+--- a/drivers/gunyah/scm.c
++++ b/drivers/gunyah/scm.c
+@@ -xxx,8 +xxx,8 @@
+ static int gunyah_scm_vmid_assign(struct gunyah_dev *gdev, u32 *vmid)
+ {
+ 	int ret;
+-	ret = gunyah_scm_call(gdev, SCM_VM_CREATE, vmid);
++	ret = gunyah_scm_call(gdev, SCM_VM_CREATE, gdev->vmid);
+ 	if (ret) {
+-		dev_err(gdev->dev, "Create VM failed vmid=%u\n", *vmid);
++		dev_err(gdev->dev, "Create VM failed vmid=%u\n", gdev->vmid);
+ 		return ret;
+ 	}
+-	*vmid = gdev->vmid;
++
+ 	return 0;
+ }
