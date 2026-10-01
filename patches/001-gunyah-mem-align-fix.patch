@@ -1,0 +1,30 @@
+diff --git a/drivers/gunyah/gunyah_vm_mgr.c b/drivers/gunyah/gunyah_vm_mgr.c
+--- a/drivers/gunyah/gunyah_vm_mgr.c
++++ b/drivers/gunyah/gunyah_vm_mgr.c
+@@ -xxx,7 +xxx,7 @@
+ static int gh_vm_alloc_mem(struct gh_vm *ghvm, u64 size, u64 *ipa_base)
+ {
+        struct gh_vm_mem *mem;
+-       u64 align = SZ_2M;
++       u64 align = SZ_4K;
+        int ret;
+
+        if (size < SZ_4K)
+                return -EINVAL;
+        if (!IS_ALIGNED(size, align))
+                return -EINVAL;
+
+-       mem = kzalloc(sizeof(*mem), GFP_KERNEL);
++       mem = kzalloc(sizeof(*mem), GFP_KERNEL | __GFP_ZERO);
+        if (!mem)
+                return -ENOMEM;
+
+@@ -xxx,21 +xxx,21 @@
+        if (ret)
+                goto free_mem;
+
+-       *ipa_base = mem->ipa;
++       *ipa_base = mem->ipa & PAGE_MASK;
+        return 0;
+
+ free_mem:
